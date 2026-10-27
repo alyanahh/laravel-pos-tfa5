@@ -12,7 +12,8 @@
     </p>
 
     <p>
-        It demonstrates the use of Laravel migrations, seeders, Eloquent models, controllers, and Blade views to retrieve and display records from a database.
+        It demonstrates the use of Laravel routes, controllers,
+        Blade views, and static PHP arrays.
     </p>
 
     <h3>Purpose</h3>

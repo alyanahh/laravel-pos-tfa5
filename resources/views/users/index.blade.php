@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'User Accounts | POS System')
@@ -5,7 +6,7 @@
 @section('content')
     <h2>User Accounts</h2>
 
-    <p>List of system users.</p>
+    <p>List of system users and their assigned roles.</p>
 
     <table>
         <thead>
@@ -13,23 +14,23 @@
                 <th>ID</th>
                 <th>Full Name</th>
                 <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
             </tr>
         </thead>
 
         <tbody>
-            @forelse ($users as $user)
+            @foreach ($users as $user)
                 <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->full_name }}</td>
-                    <td>{{ $user->username }}</td>
+                    <td>{{ $user['id'] }}</td>
+                    <td>{{ $user['name'] }}</td>
+                    <td>{{ $user['username'] }}</td>
+                    <td>{{ $user['email'] }}</td>
+                    <td>{{ $user['role'] }}</td>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="3">No users found.</td>
-                </tr>
-            @endforelse
+            @endforeach
         </tbody>
     </table>
 
-    <p>Total users: {{ $users->count() }}</p>
+    <p>Total users: {{ count($users) }}</p>
 @endsection
