@@ -1,9 +1,8 @@
-
 FROM php:8.3-apache
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip libzip-dev libonig-dev \
-    && docker-php-ext-install pdo_mysql mbstring zip \
+    && apt-get install -y --no-install-recommends unzip libzip-dev libonig-dev libsqlite3-dev \
+    && docker-php-ext-install pdo_sqlite sqlite3 mbstring zip \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
@@ -18,7 +17,9 @@ ENV APP_ENV=production \
     LOG_CHANNEL=stderr \
     SESSION_DRIVER=file \
     CACHE_STORE=file \
-    QUEUE_CONNECTION=sync
+    QUEUE_CONNECTION=sync \
+    DB_CONNECTION=sqlite \
+    DB_DATABASE=/var/www/html/database/database.sqlite
 
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 
@@ -30,4 +31,4 @@ RUN sed -i 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf \
 
 EXPOSE 10000
 
-CMD ["apache2-foreground"]
+CMD ["bash", "-lc", "mkdir -p database && if [ ! -f \"$DB_DATABASE\" ]; then touch \"$DB_DATABASE\" && chown www-data:www-data \"$DB_DATABASE\" && php artisan migrate --force && php artisan db:seed --force; else php artisan migrate --force; fi && chown -R www-data:www-data database storage bootstrap/cache && exec apache2-foreground"]

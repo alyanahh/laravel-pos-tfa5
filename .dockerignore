@@ -2,5 +2,6 @@
 .env
 .env.*
 !.env.example
+database/*.sqlite
 vendor
 node_modules
