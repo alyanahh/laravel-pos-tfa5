@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Customer Accounts | POS System')
@@ -15,22 +14,24 @@
                 <th>Customer Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Status</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach ($customers as $customer)
+            @forelse ($customers as $customer)
                 <tr>
-                    <td>{{ $customer['id'] }}</td>
-                    <td>{{ $customer['name'] }}</td>
-                    <td>{{ $customer['email'] }}</td>
-                    <td>{{ $customer['phone'] }}</td>
-                    <td>{{ $customer['status'] }}</td>
+                    <td>{{ $customer->id }}</td>
+                    <td>{{ $customer->full_name }}</td>
+                    <td>{{ $customer->email }}</td>
+                    <td>{{ $customer->phone }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="4">No customers found.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 
-    <p>Total customers: {{ count($customers) }}</p>
+    <p>Total customers: {{ $customers->count() }}</p>
 @endsection
